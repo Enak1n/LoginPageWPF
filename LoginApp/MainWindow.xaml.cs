@@ -40,12 +40,12 @@ namespace LoginApp
             string? repeatedPassword = RepeatPasswordTextBox.Password;
             string? email = EmailTextBox.Text;
 
-            if(username == null || username.Length < 4)
+            if (username == null || username.Length < 4)
             {
                 UsernameTextBox.ToolTip = "Неккоректное значение!";
                 UsernameTextBox.Background = Brushes.LightPink;
             }
-            else if(password == null || password.Length < 10)
+            else if (password == null || password.Length < 10)
             {
                 PasswordTextBox.ToolTip = "Неккоректное значение!";
                 PasswordTextBox.Background = Brushes.LightPink;
@@ -55,7 +55,7 @@ namespace LoginApp
                 RepeatPasswordTextBox.ToolTip = "Пароли не совпадают!";
                 RepeatPasswordTextBox.Background = Brushes.LightPink;
             }
-            else if(!Regex.IsMatch(email, emailCondition) || email == null)
+            else if (!Regex.IsMatch(email, emailCondition) || email == null)
             {
                 EmailTextBox.ToolTip = "Email не соответствует шаблону!";
                 EmailTextBox.Background = Brushes.LightPink;
@@ -63,14 +63,26 @@ namespace LoginApp
             else
             {
                 User user = new User(username, password, email);
+                User userFromDb = null;
+                using (DataBaseContext context = new DataBaseContext())
+                {
+                    userFromDb = context.Users.Where(b => b.username == username || b.email == email).FirstOrDefault();
+                }
 
-                _db.Users.Add(user);
-                _db.SaveChanges();
-                ResetTextBoxes();
+                if (userFromDb != null )
+                {
+                    MessageBox.Show("User is already created!");
+                }
+                else
+                {
+                    _db.Users.Add(user);
+                    _db.SaveChanges();
+                    ResetTextBoxes();
 
-                UserPageWindow userPageWindow = new UserPageWindow();
-                userPageWindow.Show();
-                Hide();
+                    UserPageWindow userPageWindow = new UserPageWindow();
+                    userPageWindow.Show();
+                    Hide();
+                }
             }
         }
 
