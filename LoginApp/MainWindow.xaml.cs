@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -26,8 +29,10 @@ namespace LoginApp
         public MainWindow()
         {
             InitializeComponent();
+            Database.SetInitializer<DataBaseContext>(new DropCreateDatabaseIfModelChanges<DataBaseContext>());
 
-            System.Data.SQLite.SQLiteFactory.Instance.CreateConnection();
+            List<User> users = _db.Users.ToList();
+            MessageBox.Show(users[0].username);
         }
 
         private void SignInButton_Click(object sender, RoutedEventArgs e)

@@ -6,6 +6,6 @@ namespace LoginApp
     {
         public DbSet<User> Users { get; set; }
 
-        public DataBaseContext() : base("DefaultConnection") { }
+        public DataBaseContext() : base("C:\\VisualStudioProjects\\LoginApp\\LoginApp\\Users.db") { }
     }
 }
