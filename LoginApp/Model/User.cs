@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LoginApp
+namespace LoginApp.Model
 {
     public class User
     {
@@ -15,7 +15,7 @@ namespace LoginApp
 
         public User() { }
 
-        public User(string username, string password, string email) 
+        public User(string username, string password, string email)
         {
             this.username = username;
             this.password = password;

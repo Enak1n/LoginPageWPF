@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using LoginApp.Model;
 
 namespace LoginApp
 {
