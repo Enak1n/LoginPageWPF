@@ -30,9 +30,6 @@ namespace LoginApp
         {
             InitializeComponent();
             Database.SetInitializer<DataBaseContext>(new DropCreateDatabaseIfModelChanges<DataBaseContext>());
-
-            List<User> users = _db.Users.ToList();
-            MessageBox.Show(users[0].username);
         }
 
         private void SignInButton_Click(object sender, RoutedEventArgs e)
@@ -70,6 +67,10 @@ namespace LoginApp
                 _db.Users.Add(user);
                 _db.SaveChanges();
                 ResetTextBoxes();
+
+                UserPageWindow userPageWindow = new UserPageWindow();
+                userPageWindow.Show();
+                Hide();
             }
         }
 
@@ -84,6 +85,13 @@ namespace LoginApp
             PasswordTextBox.Background = Brushes.Transparent;
             RepeatPasswordTextBox.Background = Brushes.Transparent;
             EmailTextBox.Background = Brushes.Transparent;
+        }
+
+        private void LogInButton_Click(object sender, RoutedEventArgs e)
+        {
+            AuthWindow authWindow = new AuthWindow();
+            authWindow.Show();
+            Hide();
         }
     }
 }

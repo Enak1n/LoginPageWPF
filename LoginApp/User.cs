@@ -21,5 +21,10 @@ namespace LoginApp
             this.password = password;
             this.email = email;
         }
+
+        public override string ToString()
+        {
+            return $"Username: {username}. Email: {email}. Password: {password}";
+        }
     }
 }
