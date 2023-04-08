@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using LoginApp.Model;
 
 namespace LoginApp
 {
@@ -31,26 +32,24 @@ namespace LoginApp
 
             if (username == null || username.Length < 4)
             {
-                UsernameTextBox.ToolTip = "Неккоректное значение!";
-                UsernameTextBox.Background = Brushes.LightPink;
+                MarkInvalid(UsernameTextBox);
             }
             else if (password == null || password.Length < 10)
             {
-                PasswordTextBox.ToolTip = "Неккоректное значение!";
-                PasswordTextBox.Background = Brushes.LightPink;
+                MarkInvalid(PasswordTextBox);
             }
             else
             {
                 ResetTextBoxes();
 
-                User authUser = null;
-
+                User? authUser;
                 using (DataBaseContext context = new DataBaseContext())
                 {
-                    authUser = context.Users.Where(b => b.username == username && b.password == password).FirstOrDefault();
+                    authUser = context.Users.Where(b => b.username == username && b.password == password)
+                        .FirstOrDefault();
                 }
 
-                if(authUser != null)
+                if (authUser != null)
                 {
                     UserPageWindow userPageWindow = new UserPageWindow();
                     userPageWindow.Show();
@@ -77,6 +76,12 @@ namespace LoginApp
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
             Hide();
+        }
+
+        private void MarkInvalid(Control control)
+        {
+            control.ToolTip = "Неккоректное значение!";
+            control.Background = Brushes.LightPink;
         }
     }
 }

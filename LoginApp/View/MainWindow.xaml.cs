@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using LoginApp.Model;
 
 namespace LoginApp
 {
@@ -42,28 +43,24 @@ namespace LoginApp
 
             if (username == null || username.Length < 4)
             {
-                UsernameTextBox.ToolTip = "Неккоректное значение!";
-                UsernameTextBox.Background = Brushes.LightPink;
+                MarkInvalid(UsernameTextBox);
             }
             else if (password == null || password.Length < 10)
             {
-                PasswordTextBox.ToolTip = "Неккоректное значение!";
-                PasswordTextBox.Background = Brushes.LightPink;
+                MarkInvalid(PasswordTextBox);
             }
             else if (password != repeatedPassword)
             {
-                RepeatPasswordTextBox.ToolTip = "Пароли не совпадают!";
-                RepeatPasswordTextBox.Background = Brushes.LightPink;
+                MarkInvalid(PasswordTextBox);
             }
             else if (!Regex.IsMatch(email, emailCondition) || email == null)
             {
-                EmailTextBox.ToolTip = "Email не соответствует шаблону!";
-                EmailTextBox.Background = Brushes.LightPink;
+                MarkInvalid(EmailTextBox);
             }
             else
             {
                 User user = new User(username, password, email);
-                User userFromDb = null;
+                User userFromDb;
                 using (DataBaseContext context = new DataBaseContext())
                 {
                     userFromDb = context.Users.Where(b => b.username == username || b.email == email).FirstOrDefault();
@@ -104,6 +101,12 @@ namespace LoginApp
             AuthWindow authWindow = new AuthWindow();
             authWindow.Show();
             Hide();
+        }
+
+        private void MarkInvalid(Control control)
+        {
+            control.ToolTip = "Неккоректное значение!";
+            control.Background = Brushes.LightPink;
         }
     }
 }
